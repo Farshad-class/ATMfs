@@ -51,8 +51,6 @@ void menu1()
 	{
 		exit();
 	}
-
-
 }
 
 void chckbalance()
@@ -75,10 +73,6 @@ void chckbalance()
 			}
 		} while (k != 5);
 }
-
-
-
-
 
 void checkpass()
 {
@@ -129,13 +123,11 @@ void checkpass()
 						}
 					}
 				}
-
-
 			}
-
 		}
 	}
 }
+
 void transferMoney1()
 {
 	cout << "Please enter amount for transfer : ";
@@ -206,7 +198,6 @@ void transferMoney1()
 				}
 			}
 		}
-
 	}
 	fstream fileobj;
 	fileobj.open("bank.txt", ios::in);
@@ -243,7 +234,6 @@ void transferMoney1()
 				break;
 			}
 		} while (k != 5);
-
 }
 
 void changePass1()
@@ -319,7 +309,6 @@ void changePass1()
 					temp << cardpass << endl;
 				}
 				temp << Cardnumber << endl;
-
 			}
 			ifstream openn1("temp.txt");
 			fstream bank11;
@@ -332,15 +321,11 @@ void changePass1()
 				bank11 << balance << endl;
 				bank11 << cardpass << endl;
 				bank11 << Cardnumber << endl;
-
 			}
 			cout << "Your password change successfully." << endl;
 			checkpass();
-
-
 		}
 	}
-
 }
 void exit()
 {
