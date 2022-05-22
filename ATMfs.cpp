@@ -22,7 +22,10 @@ int main()
 {
 	fill1();
 	return 0;
-	getch();
+}
+void fill1()
+{
+	checkpass();
 }
 
 void menu1()
@@ -347,8 +350,5 @@ void exit()
 	}
 }
 
-void fill1()
-{
-	checkpass();
-}
+
 
