@@ -9,8 +9,9 @@ using namespace std;
 string name, family, Cardnumber, cardnumber, ca;
 string  cardpass, pass, pass1, pass2;
 int balance, balance2, cardpass2;
-int a, b, k, en, ex, id, fi;
+int a, b, k, en, ex, id, fi,acc;
 bool flag = 0;
+bool cardblock = 0;
 bool Activeflag = 1;
 bool lettransfer = 1;
 void chckbalance();
@@ -127,7 +128,7 @@ void checkpass()
 					}
 					else
 					{
-						cout << "You enter mistake more than 1 times. " << endl;
+						cout << "You enter mistake 1 times. " << endl;
 						for (int j = 2; j <= 3; j++)
 						{
 							cout << "Please enter your card pass : ";
@@ -163,7 +164,6 @@ void checkpass()
 									}
 									else
 									{
-										Activeflag = 1;
 										fobjtemp << Activeflag << endl;
 									}
 								}
@@ -183,17 +183,28 @@ void checkpass()
 
 								}
 								cout << "You enter mistake more than" << j << " times. Your Card is blocked" << endl;
-								exit2();
+								cardblock = 1;
+								break;
 							}
 
 						}
 					}
 				}
+			
 			}
 			else
 			{
-				cout << "Your card is blocked for security resoan, Please contact with bank administrator" << endl;
-				exit2();
+				if (cardblock == 1)
+				{
+					cardblock = 0;
+					exit2();
+				}
+				else
+				{
+					cout << "Your card is blocked for security resoan, Please contact with bank administrator" << endl;
+					exit2();
+				}
+
 			}
 		}
 	}
@@ -245,61 +256,106 @@ void transferMoney1()
 					lettransfer = 1;
 				}
 			}
-			if (lettransfer != 0)
+			fstream fileobj22;
+			fileobj22.open("bank.txt", ios::in);
+			while (fileobj22 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
 			{
-				ifstream open("bank.txt");
-				fstream temp;
-				temp.open("temp.txt", ios::out);
-				while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+				if (ca == Cardnumber)
 				{
-					temp << id << endl;
-					temp << name << endl;
-					temp << family << endl;
-					if (ca == Cardnumber)
-					{
-						balance += en;
-						flag = 1;
-						temp << balance << endl;
+					fileobj22 << id << endl;
+					fileobj22 << name << endl;
+					fileobj22 << family << endl;
+					fileobj22 << balance << endl;
+					fileobj22 << cardpass << endl;
+					fileobj22 << Cardnumber << endl;
+					fileobj22 << Activeflag << endl;
 
+					cout << "Destination Customer name : " << name << endl;
+					cout << "Destination Customer family : " << family << endl;
+					cout << "Destination Customer Cardnumber : " << Cardnumber << endl;
+					cout << "Transfer Amount : " << en << " IRR" << endl;
+					cout << "Do you want to continue : (Y=1/N=0): ";
+					cin >> acc;
+					if (acc == 1)
+					{
+						if (lettransfer != 0)
+						{
+							ifstream open("bank.txt");
+							fstream temp;
+							temp.open("temp.txt", ios::out);
+							while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+							{
+								temp << id << endl;
+								temp << name << endl;
+								temp << family << endl;
+								if (ca == Cardnumber)
+								{
+									balance += en;
+									flag = 1;
+									temp << balance << endl;
+
+								}
+								else
+								{
+									temp << balance << endl;
+								}
+								temp << cardpass << endl;
+								temp << Cardnumber << endl;
+								temp << Activeflag << endl;
+
+							}
+							ifstream openn("temp.txt");
+							fstream bank1;
+							bank1.open("bank.txt", ios::out);
+							while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+							{
+								if (id != fi)
+								{
+									bank1 << id << endl;
+									bank1 << name << endl;
+									bank1 << family << endl;
+									bank1 << balance << endl;
+									bank1 << cardpass << endl;
+									bank1 << Cardnumber << endl;
+									bank1 << Activeflag << endl;
+								}
+								else
+								{
+									bank1 << id << endl;
+									bank1 << name << endl;
+									bank1 << family << endl;
+									balance -= en;
+									bank1 << balance << endl;
+									bank1 << cardpass << endl;
+									bank1 << Cardnumber << endl;
+									bank1 << Activeflag << endl;
+
+								}
+							}
+						}
 					}
 					else
 					{
-						temp << balance << endl;
-					}
-					temp << cardpass << endl;
-					temp << Cardnumber << endl;
-					temp << Activeflag << endl;
-
-				}
-				ifstream openn("temp.txt");
-				fstream bank1;
-				bank1.open("bank.txt", ios::out);
-				while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
-				{
-					if (id != fi)
-					{
-						bank1 << id << endl;
-						bank1 << name << endl;
-						bank1 << family << endl;
-						bank1 << balance << endl;
-						bank1 << cardpass << endl;
-						bank1 << Cardnumber << endl;
-						bank1 << Activeflag << endl;
-					}
-					else
-					{
-						bank1 << id << endl;
-						bank1 << name << endl;
-						bank1 << family << endl;
-						balance -= en;
-						bank1 << balance << endl;
-						bank1 << cardpass << endl;
-						bank1 << Cardnumber << endl;
-						bank1 << Activeflag << endl;
-
+						fstream fileobj;
+						fileobj.open("bank.txt", ios::in);
+						while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+						{
+							if (id == fi)
+							{
+								fileobj << id << endl;
+								fileobj << name << endl;
+								fileobj << family << endl;
+								fileobj << balance << endl;
+								fileobj << cardpass << endl;
+								fileobj << Cardnumber << endl;
+								fileobj << Activeflag << endl;
+								break;
+							}
+						}
 					}
 				}
 			}
+			
 		}
 		fstream fileobj;
 		fileobj.open("bank.txt", ios::in);
