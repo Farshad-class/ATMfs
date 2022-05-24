@@ -1,7 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <stdio.h>
-//#include <math.h>
+#include<windows.h>
 #include <fstream>
 #include <string>
 #pragma warning(disable : 4996)
@@ -9,11 +9,8 @@ using namespace std;
 string name, family, Cardnumber, cardnumber, ca;
 string  cardpass, pass, pass1, pass2;
 int balance, balance2, cardpass2;
-int a, b, k, en, ex, id, fi,acc;
-bool flag = 0;
-bool cardblock = 0;
-bool Activeflag = 1;
-bool lettransfer = 1;
+int a, b, k, en, ex, id, fi,acc,rl;
+bool Activeflag = 1 , lettransfer = 1 , cardblock = 0 , flag = 0;
 void chckbalance();
 void menu1();
 void checkpass();
@@ -22,6 +19,7 @@ void transferMoney1();
 void changePass1();
 void exit();
 void exit2();
+int cls();
 int main()
 {
 	fill1();
@@ -34,9 +32,16 @@ void fill1()
 
 void menu1()
 {
-	cout << "Welcome " << name << " " << family << "\n";
+	cout << endl;
+	cout << endl;
+	cls();
+	cout << "          Welcome " << name << " " << family << "\n";
+	cout << endl;
+	cout << endl;
 	cout << "1. Check Balance     2. Transfer Money \n";
+	cout << endl;
 	cout << "3. Change Pass       4.exit \n";
+	cout << endl;
 	cout << "PLease enter a number for selected service : ";
 	cin >> a;
 	if (a == 1)
@@ -59,11 +64,14 @@ void menu1()
 
 void chckbalance()
 {
-	cout << "Your account balance is :" << balance << "IRR" << "\n";
+	cout << endl;
+	cout << "Your account balance is :" << balance << " IRR" << "\n";
+	cout << endl;
 	cout << "For return to main menu, please enter number 5 : ";
 	cin >> k;
 	if (k == 5)
 	{
+		cls();
 		menu1();
 	}
 	else
@@ -72,6 +80,7 @@ void chckbalance()
 			cin >> k;
 			if (k == 5)
 			{
+				cls();
 				menu1();
 				break;
 			}
@@ -128,13 +137,16 @@ void checkpass()
 					}
 					else
 					{
+						cout << endl;
 						cout << "You enter mistake 1 times. " << endl;
 						for (int j = 2; j <= 3; j++)
 						{
+							cout << endl;
 							cout << "Please enter your card pass : ";
 							cin >> pass;
 							if (pass != cardpass)
 							{
+								cout << endl;
 								cout << "You enter mistake " << j << " times." << endl;
 							}
 							else
@@ -182,6 +194,7 @@ void checkpass()
 									fobj << Activeflag << endl;
 
 								}
+								cout << endl;
 								cout << "You enter mistake more than" << j << " times. Your Card is blocked" << endl;
 								cardblock = 1;
 								break;
@@ -201,6 +214,7 @@ void checkpass()
 				}
 				else
 				{
+					cout << endl;
 					cout << "Your card is blocked for security resoan, Please contact with bank administrator" << endl;
 					exit2();
 				}
@@ -216,7 +230,9 @@ void transferMoney1()
 	cin >> en;
 	if (en > balance)
 	{
+		cout << endl;
 		cout << "Your request amount more than your balance. " << endl;
+		cout << endl;
 	}
 	else
 	{
@@ -225,6 +241,7 @@ void transferMoney1()
 		if (ca.length() != 16)
 		{
 			cout << "your card number is not correct. " << endl;
+			cout << endl;
 			cout << "Please enter new card : ";
 			cin >> ca;
 		}
@@ -246,6 +263,7 @@ void transferMoney1()
 					if (Activeflag == 0)
 					{
 						lettransfer = 0;
+						cout << endl;
 						cout << "Sorry, Destination card is block for security resaon." << endl;
 						break;
 					}
@@ -274,6 +292,7 @@ void transferMoney1()
 					cout << "Destination Customer family : " << family << endl;
 					cout << "Destination Customer Cardnumber : " << Cardnumber << endl;
 					cout << "Transfer Amount : " << en << " IRR" << endl;
+					cout << endl;
 					cout << "Do you want to continue : (Y=1/N=0): ";
 					cin >> acc;
 					if (acc == 1)
@@ -376,21 +395,26 @@ void transferMoney1()
 	}
 	if (flag == 1)
 	{
+		cout << endl;
 		cout << en << " IRR successfully transfer. " << endl;
 		flag = 0;
 	}
+	cout << endl;
 	cout << "For return to main menu, please enter number 5 : ";
 	cin >> k;
 	if (k == 5)
 	{
+		cls();
 		menu1();
 	}
 	else
 		do {
+			cout << endl;
 			cout << "For return to main menu, please enter number 5 : ";
 			cin >> k;
 			if (k == 5)
 			{
+				cls();
 				menu1();
 				break;
 			}
@@ -399,6 +423,7 @@ void transferMoney1()
 
 void changePass1()
 {
+	cout << endl;
 	cout << "Please enter your current password : ";
 	cin >> pass;
 	fstream fileobj;
@@ -421,10 +446,12 @@ void changePass1()
 	{
 		cout << "You enter pass is incorrect  " << endl;
 		do {
+			cout << endl;
 			cout << "For return to main menu, please enter number 5 : ";
 			cin >> k;
 			if (k == 5)
 			{
+				cls();
 				menu1();
 				break;
 			}
@@ -440,10 +467,12 @@ void changePass1()
 		{
 			cout << "your enterd pass not match" << endl;
 			do {
+				cout << endl;
 				cout << "For return to main menu, please enter number 5 : ";
 				cin >> k;
 				if (k == 5)
 				{
+					cls();
 					menu1();
 					break;
 				}
@@ -486,6 +515,7 @@ void changePass1()
 				bank11 << Cardnumber << endl;
 				bank11 << Activeflag << endl;
 			}
+			cout << endl;
 			cout << "Your password change successfully." << endl;
 			checkpass();
 		}
@@ -495,12 +525,35 @@ void exit()
 {
 	if (a == 4)
 	{
-		cout << "Thanks you and good bye. ";
+		//cls();
+		cout << endl;
+		cout << "            Thanks you and good bye. ";
+		cout << endl;
+		cout << "Do you want login with another card : (Y=1/N=0)";
+		cin >> rl;
+		if (rl == 1)
+		{
+			fill1();
+		}
 	}
 }
 void exit2()
 {
-	cout << "Thanks you and good bye. ";
+	cout << endl;
+	cout << "                Thanks you and good bye. ";
+	cout << endl;
+	cout << "Do you want login with another card : (Y=1/N=0)";
+	cin >> rl;
+	if (rl == 1)
+	{
+		fill1();
+	}
+}
+
+int cls()
+{
+	system("cls");
+	return 0;
 }
 
 
