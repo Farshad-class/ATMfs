@@ -24,6 +24,7 @@ char pa[4];
 void passchangetostar();
 string passchangetostar1();
 string passchangetostar2();
+void returnmainmenu();
 int main()
 {
 	fill1();
@@ -64,6 +65,11 @@ void menu1()
 	{
 		exit();
 	}
+	else
+	{
+		cout << "Enterd number is not correct." << endl;
+		void returnmainmenu();
+	}
 }
 
 void chckbalance()
@@ -71,26 +77,8 @@ void chckbalance()
 	cout << endl;
 	cout << "Your account balance is :" << balance << " IRR" << "\n";
 	cout << endl;
-	cout << "For return to main menu, please enter number 5 : ";
-	cin >> k;
-	if (k == 5)
-	{
-		cls();
-		menu1();
-	}
-	else
-		do {
-			cout << "For return to main menu, please enter number 5 : ";
-			cin >> k;
-			if (k == 5)
-			{
-				cls();
-				menu1();
-				break;
-			}
-		} while (k != 5);
+	returnmainmenu();
 }
-
 void checkpass()
 {
 	int j = 0;
@@ -402,25 +390,7 @@ void transferMoney1()
 		flag = 0;
 	}
 	cout << endl;
-	cout << "For return to main menu, please enter number 5 : ";
-	cin >> k;
-	if (k == 5)
-	{
-		cls();
-		menu1();
-	}
-	else
-		do {
-			cout << endl;
-			cout << "For return to main menu, please enter number 5 : ";
-			cin >> k;
-			if (k == 5)
-			{
-				cls();
-				menu1();
-				break;
-			}
-		} while (k != 5);
+	returnmainmenu();
 }
 
 void changePass1()
@@ -446,17 +416,7 @@ void changePass1()
 	if (pass != cardpass)
 	{
 		cout << "You enter pass is incorrect  " << endl;
-		do {
-			cout << endl;
-			cout << "For return to main menu, please enter number 5 : ";
-			cin >> k;
-			if (k == 5)
-			{
-				cls();
-				menu1();
-				break;
-			}
-		} while (k != 5);
+		returnmainmenu();
 	}
 	else
 	{
@@ -475,17 +435,8 @@ void changePass1()
 		if (pass1 != pass2)
 		{
 			cout << "your enterd pass not match" << endl;
-			do {
 				cout << endl;
-				cout << "For return to main menu, please enter number 5 : ";
-				cin >> k;
-				if (k == 5)
-				{
-					cls();
-					menu1();
-					break;
-				}
-			} while (k != 5);
+				returnmainmenu();
 		}
 		else
 		{
@@ -657,4 +608,25 @@ string passchangetostar2()
 
 }
 
+void returnmainmenu()
+{
+	cout << "For return to main menu, please enter number 5 : ";
+	cin >> k;
+	if (k == 5)
+	{
+		cls();
+		menu1();
+	}
+	else
+		do {
+			cout << "For return to main menu, please enter number 5 : ";
+			cin >> k;
+			if (k == 5)
+			{
+				cls();
+				menu1();
+				break;
+			}
+		} while (k != 5);
+}
 
