@@ -9,8 +9,8 @@ using namespace std;
 string name, family, Cardnumber, cardnumber, ca;
 string  cardpass, pass, pass1, pass2;
 int balance, balance2, cardpass2;
-int a, b, k, en, ex, id, fi,acc,rl;
-bool Activeflag = 1 , lettransfer = 1 , cardblock = 0 , flag = 0;
+int a, b, k, en, ex, id, fi, acc, rl;
+bool Activeflag = 1, lettransfer = 1, cardblock = 0, flag = 0;
 void chckbalance();
 void menu1();
 void checkpass();
@@ -20,6 +20,10 @@ void changePass1();
 void exit();
 void exit2();
 int cls();
+char pa[4];
+void passchangetostar();
+string passchangetostar1();
+string passchangetostar2();
 int main()
 {
 	fill1();
@@ -104,8 +108,7 @@ void checkpass()
 		} while (cardnumber.length() != 16);
 
 
-		cout << "Please enter your card pass : ";
-		cin >> pass;
+		passchangetostar();
 		do {
 			if (pass.length() != 4)
 			{
@@ -142,8 +145,7 @@ void checkpass()
 						for (int j = 2; j <= 3; j++)
 						{
 							cout << endl;
-							cout << "Please enter your card pass : ";
-							cin >> pass;
+							passchangetostar();
 							if (pass != cardpass)
 							{
 								cout << endl;
@@ -195,7 +197,7 @@ void checkpass()
 
 								}
 								cout << endl;
-								cout << "You enter mistake more than" << j << " times. Your Card is blocked" << endl;
+								cout << "You enter mistake more than " << j << " times. Your Card is blocked" << endl;
 								cardblock = 1;
 								break;
 							}
@@ -203,7 +205,7 @@ void checkpass()
 						}
 					}
 				}
-			
+
 			}
 			else
 			{
@@ -374,7 +376,7 @@ void transferMoney1()
 					}
 				}
 			}
-			
+
 		}
 		fstream fileobj;
 		fileobj.open("bank.txt", ios::in);
@@ -424,8 +426,7 @@ void transferMoney1()
 void changePass1()
 {
 	cout << endl;
-	cout << "Please enter your current password : ";
-	cin >> pass;
+	passchangetostar();
 	fstream fileobj;
 	fileobj.open("bank.txt", ios::in);
 	while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
@@ -459,10 +460,18 @@ void changePass1()
 	}
 	else
 	{
-		cout << "Please enter your new password : ";
-		cin >> pass1;
-		cout << "Please enter your new password again : ";
-		cin >> pass2;
+		for (int i = 1; i <= 2; i++)
+		{
+			if (i == 1)
+			{
+				pass1 = passchangetostar1();
+			}
+			else if (i == 2)
+			{
+				pass2 = passchangetostar2();
+			}
+			 
+		}
 		if (pass1 != pass2)
 		{
 			cout << "your enterd pass not match" << endl;
@@ -556,5 +565,96 @@ int cls()
 	return 0;
 }
 
+void passchangetostar()
+{
+	{
+		int c = 0;
+		char a[4];
+		printf("\nPlease enter your card pass ");
+		for (; c < 4;)
+		{
+			a[c] = getch();
+
+			if (a[c] != 8)
+			{
+				printf("*");
+				c++;
+			}
+			else
+			{
+
+				cout << "\b";
+				cout << " ";
+				cout << "\b";
+				c--;
+			}
+		}
+		string str(a, 4);
+		pass = str;
+	}
+
+}
+
+string passchangetostar1()
+{
+	{
+		int c = 0;
+		char a[4];
+		printf("\nPlease enter your new password : ");
+		for (; c < 4;)
+		{
+			a[c] = getch();
+
+			if (a[c] != 8)
+			{
+				printf("*");
+				c++;
+			}
+			else
+			{
+
+				cout << "\b";
+				cout << " ";
+				cout << "\b";
+				c--;
+			}
+		}
+		string str(a, 4);
+		pass = str;
+		return pass;
+	}
+
+}
+
+string passchangetostar2()
+{
+	{
+		int c = 0;
+		char a[4];
+		printf("\nPlease enter your new password agine : ");
+		for (; c < 4;)
+		{
+			a[c] = getch();
+
+			if (a[c] != 8)
+			{
+				printf("*");
+				c++;
+			}
+			else
+			{
+
+				cout << "\b";
+				cout << " ";
+				cout << "\b";
+				c--;
+			}
+		}
+		string str(a, 4);
+		pass = str;
+		return pass;
+	}
+
+}
 
 
