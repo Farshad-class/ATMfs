@@ -4,13 +4,13 @@
 #include<windows.h>
 #include <fstream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #pragma warning(disable : 4996)
 using namespace std;
-string name, family, Cardnumber, cardnumber, ca;
-string  cardpass, pass, pass1, pass2;
-int balance, balance2, cardpass2;
-int a, b, k, en, ex, id, fi, acc, rl;
-bool Activeflag = 1, lettransfer = 1, cardblock = 0, flag = 0;
+string name, family, Cardnumber, cardnumber, ca, cardpass, pass, pass1, pass2, internetPass;
+int balance, balance2, cardpass2, a, b,g,g1,g2, k, en, ex, id, fi, acc, rl, cvv2, cvv2t;
+bool Activeflag = 1, lettransfer = 1, cardblock = 0, flag = 0, internetPassflag,checkflag;
 void chckbalance();
 void menu1();
 void checkpass();
@@ -20,11 +20,15 @@ void changePass1();
 void exit();
 void exit2();
 int cls();
-char pa[4];
+int  randCvv2();
+void setInternetPass();
 void passchangetostar();
 string passchangetostar1();
-string passchangetostar2();
+void activeInternetPass();
 void returnmainmenu();
+void checkInternetpassactive();
+void disactiveInternetPass();
+void readdata();
 int main()
 {
 	fill1();
@@ -34,7 +38,6 @@ void fill1()
 {
 	checkpass();
 }
-
 void menu1()
 {
 	cout << endl;
@@ -45,7 +48,9 @@ void menu1()
 	cout << endl;
 	cout << "1. Check Balance     2. Transfer Money \n";
 	cout << endl;
-	cout << "3. Change Pass       4.exit \n";
+	cout << "3. Change Pass       4.Active Internet Pass \n";
+	cout << endl;
+	cout << "5.Set and change Internet Pass       6.exit \n";
 	cout << endl;
 	cout << "PLease enter a number for selected service : ";
 	cin >> a;
@@ -63,6 +68,14 @@ void menu1()
 	}
 	else if (a == 4)
 	{
+		checkInternetpassactive();
+	}
+	else if (a == 5)
+	{
+		setInternetPass();
+	}
+	else if (a == 6)
+	{
 		exit();
 	}
 	else
@@ -71,7 +84,6 @@ void menu1()
 		void returnmainmenu();
 	}
 }
-
 void chckbalance()
 {
 	cout << endl;
@@ -114,6 +126,9 @@ void checkpass()
 			open >> cardpass;
 			open >> Cardnumber;
 			open >> Activeflag;
+			open >> internetPassflag;
+			open >> internetPass;
+			open >> cvv2;
 			if (Activeflag != 0)
 			{
 				if (cardnumber == Cardnumber)
@@ -122,8 +137,6 @@ void checkpass()
 					{
 						fi = id;
 						menu1();
-
-
 						break;
 					}
 					else
@@ -150,7 +163,7 @@ void checkpass()
 								ifstream open("bank.txt");
 								fstream fobjtemp;
 								fobjtemp.open("temp.txt", ios::out);
-								while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+								while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 								{
 									fobjtemp << id << endl;
 									fobjtemp << name << endl;
@@ -168,11 +181,14 @@ void checkpass()
 									{
 										fobjtemp << Activeflag << endl;
 									}
+									fobjtemp << internetPassflag << endl;
+									fobjtemp << internetPass << endl;
+									fobjtemp << cvv2 << endl;
 								}
 								ifstream openn("temp.txt");
 								fstream fobj;
 								fobj.open("bank.txt", ios::out);
-								while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+								while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 								{
 
 									fobj << id << endl;
@@ -182,6 +198,9 @@ void checkpass()
 									fobj << cardpass << endl;
 									fobj << Cardnumber << endl;
 									fobj << Activeflag << endl;
+									fobj << internetPassflag << endl;
+									fobj << internetPass << endl;
+									fobj << cvv2 << endl;
 
 								}
 								cout << endl;
@@ -213,7 +232,6 @@ void checkpass()
 		}
 	}
 }
-
 void transferMoney1()
 {
 	cout << "Please enter amount for transfer : ";
@@ -239,7 +257,7 @@ void transferMoney1()
 		{
 			fstream fileobj2;
 			fileobj2.open("bank.txt", ios::in);
-			while (fileobj2 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+			while (fileobj2 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 			{
 				if (ca == Cardnumber)
 				{
@@ -250,6 +268,10 @@ void transferMoney1()
 					fileobj2 << cardpass << endl;
 					fileobj2 << Cardnumber << endl;
 					fileobj2 << Activeflag << endl;
+					fileobj2 << internetPassflag << endl;
+					fileobj2 << internetPass << endl;
+					fileobj2 << cvv2 << endl;
+
 					if (Activeflag == 0)
 					{
 						lettransfer = 0;
@@ -266,7 +288,7 @@ void transferMoney1()
 			}
 			fstream fileobj22;
 			fileobj22.open("bank.txt", ios::in);
-			while (fileobj22 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+			while (fileobj22 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 			{
 				if (ca == Cardnumber)
 				{
@@ -277,6 +299,9 @@ void transferMoney1()
 					fileobj22 << cardpass << endl;
 					fileobj22 << Cardnumber << endl;
 					fileobj22 << Activeflag << endl;
+					fileobj22 << internetPassflag << endl;
+					fileobj22 << internetPass << endl;
+					fileobj22 << cvv2 << endl;
 
 					cout << "Destination Customer name : " << name << endl;
 					cout << "Destination Customer family : " << family << endl;
@@ -292,7 +317,7 @@ void transferMoney1()
 							ifstream open("bank.txt");
 							fstream temp;
 							temp.open("temp.txt", ios::out);
-							while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+							while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 							{
 								temp << id << endl;
 								temp << name << endl;
@@ -311,12 +336,15 @@ void transferMoney1()
 								temp << cardpass << endl;
 								temp << Cardnumber << endl;
 								temp << Activeflag << endl;
+								temp << internetPassflag << endl;
+								temp << internetPass << endl;
+								temp << cvv2 << endl;
 
 							}
 							ifstream openn("temp.txt");
 							fstream bank1;
 							bank1.open("bank.txt", ios::out);
-							while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+							while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 							{
 								if (id != fi)
 								{
@@ -327,6 +355,9 @@ void transferMoney1()
 									bank1 << cardpass << endl;
 									bank1 << Cardnumber << endl;
 									bank1 << Activeflag << endl;
+									bank1 << internetPassflag << endl;
+									bank1 << internetPass << endl;
+									bank1 << cvv2 << endl;
 								}
 								else
 								{
@@ -338,50 +369,22 @@ void transferMoney1()
 									bank1 << cardpass << endl;
 									bank1 << Cardnumber << endl;
 									bank1 << Activeflag << endl;
-
+									bank1 << internetPassflag << endl;
+									bank1 << internetPass << endl;
+									bank1 << cvv2 << endl;
 								}
 							}
 						}
 					}
 					else
 					{
-						fstream fileobj;
-						fileobj.open("bank.txt", ios::in);
-						while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
-						{
-							if (id == fi)
-							{
-								fileobj << id << endl;
-								fileobj << name << endl;
-								fileobj << family << endl;
-								fileobj << balance << endl;
-								fileobj << cardpass << endl;
-								fileobj << Cardnumber << endl;
-								fileobj << Activeflag << endl;
-								break;
-							}
-						}
+						readdata();
 					}
 				}
 			}
 
 		}
-		fstream fileobj;
-		fileobj.open("bank.txt", ios::in);
-		while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
-		{
-			if (id == fi)
-			{
-				fileobj << id << endl;
-				fileobj << name << endl;
-				fileobj << family << endl;
-				fileobj << balance << endl;
-				fileobj << cardpass << endl;
-				fileobj << Cardnumber << endl;
-				fileobj << Activeflag << endl;
-				break;
-			}
-		}
+		readdata();
 	}
 	if (flag == 1)
 	{
@@ -392,14 +395,13 @@ void transferMoney1()
 	cout << endl;
 	returnmainmenu();
 }
-
 void changePass1()
 {
 	cout << endl;
 	passchangetostar();
 	fstream fileobj;
 	fileobj.open("bank.txt", ios::in);
-	while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+	while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 	{
 		if (id == fi)
 		{
@@ -410,6 +412,9 @@ void changePass1()
 			fileobj << cardpass << endl;
 			fileobj << Cardnumber << endl;
 			fileobj << Activeflag << endl;
+			fileobj << internetPassflag << endl;
+			fileobj << internetPass << endl;
+			fileobj << cvv2 << endl;
 			break;
 		}
 	}
@@ -424,26 +429,28 @@ void changePass1()
 		{
 			if (i == 1)
 			{
+				g1 = 1;
 				pass1 = passchangetostar1();
 			}
 			else if (i == 2)
 			{
-				pass2 = passchangetostar2();
+				g2 = 1;
+				pass2 = passchangetostar1();
 			}
-			 
+
 		}
 		if (pass1 != pass2)
 		{
 			cout << "your enterd pass not match" << endl;
-				cout << endl;
-				returnmainmenu();
+			cout << endl;
+			returnmainmenu();
 		}
 		else
 		{
 			ifstream open1("bank.txt");
 			fstream temp;
 			temp.open("temp.txt", ios::out);
-			while (open1 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+			while (open1 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 			{
 				temp << id << endl;
 				temp << name << endl;
@@ -461,11 +468,14 @@ void changePass1()
 				}
 				temp << Cardnumber << endl;
 				temp << Activeflag << endl;
+				temp << internetPassflag << endl;
+				temp << internetPass << endl;
+				temp << cvv2 << endl;
 			}
 			ifstream openn1("temp.txt");
 			fstream bank11;
 			bank11.open("bank.txt", ios::out);
-			while (openn1 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag)
+			while (openn1 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
 			{
 				bank11 << id << endl;
 				bank11 << name << endl;
@@ -474,6 +484,9 @@ void changePass1()
 				bank11 << cardpass << endl;
 				bank11 << Cardnumber << endl;
 				bank11 << Activeflag << endl;
+				bank11 << internetPassflag << endl;
+				bank11 << internetPass << endl;
+				bank11 << cvv2 << endl;
 			}
 			cout << endl;
 			cout << "Your password change successfully." << endl;
@@ -483,18 +496,16 @@ void changePass1()
 }
 void exit()
 {
-	if (a == 4)
+
+	//cls();
+	cout << endl;
+	cout << "            Thanks you and good bye. ";
+	cout << endl;
+	cout << "Do you want login with another card : (Y=1/N=0)";
+	cin >> rl;
+	if (rl == 1)
 	{
-		//cls();
-		cout << endl;
-		cout << "            Thanks you and good bye. ";
-		cout << endl;
-		cout << "Do you want login with another card : (Y=1/N=0)";
-		cin >> rl;
-		if (rl == 1)
-		{
-			fill1();
-		}
+		fill1();
 	}
 }
 void exit2()
@@ -509,13 +520,11 @@ void exit2()
 		fill1();
 	}
 }
-
 int cls()
 {
 	system("cls");
 	return 0;
 }
-
 void passchangetostar()
 {
 	{
@@ -545,74 +554,122 @@ void passchangetostar()
 	}
 
 }
-
 string passchangetostar1()
 {
 	{
 		int c = 0;
 		char a[4];
-		printf("\nPlease enter your new password : ");
-		for (; c < 4;)
+		char b[8];
+		if (g == 0)
 		{
-			a[c] = getch();
-
-			if (a[c] != 8)
+			if (g1 == 1)
 			{
-				printf("*");
-				c++;
+				g1 = 0;
+				printf("\nPlease enter your new password : ");
+				for (; c < 4;)
+				{
+					a[c] = getch();
+
+					if (a[c] != 8)
+					{
+						printf("*");
+						c++;
+					}
+					else
+					{
+
+						cout << "\b";
+						cout << " ";
+						cout << "\b";
+						c--;
+					}
+				}
+				string str(a, 4);
+				pass = str;
+			}
+			else if (g2 == 1)
+			{
+				g2 = 0;
+				printf("\nPlease enter your new password again : ");
+				for (; c < 4;)
+				{
+					a[c] = getch();
+
+					if (a[c] != 8)
+					{
+						printf("*");
+						c++;
+					}
+					else
+					{
+
+						cout << "\b";
+						cout << " ";
+						cout << "\b";
+						c--;
+					}
+				}
+				string str(a, 4);
+				pass = str;
 			}
 			else
 			{
+				printf("\nPlease enter your new password : ");
+				for (; c < 4;)
+				{
+					a[c] = getch();
 
-				cout << "\b";
-				cout << " ";
-				cout << "\b";
-				c--;
+					if (a[c] != 8)
+					{
+						printf("*");
+						c++;
+					}
+					else
+					{
+
+						cout << "\b";
+						cout << " ";
+						cout << "\b";
+						c--;
+					}
+				}
+				string str(a, 4);
+				pass = str;
 			}
 		}
-		string str(a, 4);
-		pass = str;
+		else if (g == 1)
+		{
+			printf("\nPlease enter your new Internet password in 8 digit : ");
+			for (; c < 8;)
+			{
+				b[c] = getch();
+
+				if (b[c] != 8)
+				{
+					printf("*");
+					c++;
+				}
+				else
+				{
+
+					cout << "\b";
+					cout << " ";
+					cout << "\b";
+					c--;
+				}
+			}
+			string str(b, 8);
+			pass = str;
+		}
 		return pass;
 	}
 
 }
-
-string passchangetostar2()
-{
-	{
-		int c = 0;
-		char a[4];
-		printf("\nPlease enter your new password agine : ");
-		for (; c < 4;)
-		{
-			a[c] = getch();
-
-			if (a[c] != 8)
-			{
-				printf("*");
-				c++;
-			}
-			else
-			{
-
-				cout << "\b";
-				cout << " ";
-				cout << "\b";
-				c--;
-			}
-		}
-		string str(a, 4);
-		pass = str;
-		return pass;
-	}
-
-}
-
 void returnmainmenu()
 {
-	cout << "For return to main menu, please enter number 5 : ";
+	cout << "For return to main menu, please enter number 9 : ";
 	cin >> k;
-	if (k == 5)
+	if (k == 9)
 	{
 		cls();
 		menu1();
@@ -621,7 +678,7 @@ void returnmainmenu()
 		do {
 			cout << "For return to main menu, please enter number 5 : ";
 			cin >> k;
-			if (k == 5)
+			if (k == 9)
 			{
 				cls();
 				menu1();
@@ -629,4 +686,301 @@ void returnmainmenu()
 			}
 		} while (k != 5);
 }
+void activeInternetPass()
+{
+	ifstream open("bank.txt");
+	fstream fobjtemp;
+	fobjtemp.open("temp.txt", ios::out);
+	while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+	{
+		fobjtemp << id << endl;
+		fobjtemp << name << endl;
+		fobjtemp << family << endl;
+		fobjtemp << balance << endl;
+		fobjtemp << cardpass << endl;
+		fobjtemp << Cardnumber << endl;
+		fobjtemp << Activeflag << endl;
+		if (id == fi)
+		{
+			if (internetPassflag == 0)
+			{
+				internetPassflag = 1;
+				fobjtemp << internetPassflag << endl;
+			}
+			else
+			{
+				fobjtemp << internetPassflag << endl;
+			}
+			fobjtemp << internetPass << endl;
+			fobjtemp << cvv2 << endl;
+		}
+		else
+		{
+			fobjtemp << internetPassflag << endl;
+			fobjtemp << internetPass << endl;
+			fobjtemp << cvv2 << endl;
+		}
 
+	}
+
+	ifstream openn("temp.txt");
+	fstream fobj;
+	fobj.open("bank.txt", ios::out);
+	while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+	{
+
+		fobj << id << endl;
+		fobj << name << endl;
+		fobj << family << endl;
+		fobj << balance << endl;
+		fobj << cardpass << endl;
+		fobj << Cardnumber << endl;
+		fobj << Activeflag << endl;
+		fobj << internetPassflag << endl;
+		fobj << internetPass << endl;
+		fobj << cvv2 << endl;
+
+	}
+	cout << "This service is active now. " << endl;
+	if (checkflag == 1)
+	{
+		checkflag = 0;
+		setInternetPass();
+	}
+	returnmainmenu();
+}
+void checkInternetpassactive()
+{
+	fstream fileobj;
+	fileobj.open("bank.txt", ios::in);
+	while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+	{
+
+		if (id == fi)
+		{
+			fileobj << id << endl;
+			fileobj << name << endl;
+			fileobj << family << endl;
+			fileobj << balance << endl;
+			fileobj << cardpass << endl;
+			fileobj << Cardnumber << endl;
+			fileobj << Activeflag << endl;
+			fileobj << internetPassflag << endl;
+			fileobj << internetPass << endl;
+			fileobj << cvv2 << endl;
+			if (internetPassflag == 0)
+			{
+				int s;
+				cout << "This service is currently disabled" << endl;
+				cout << endl;
+				cout << "Do you want active Internet Pass (Y=1/N=0) ? ";
+				cin >> s;
+				if (s == 1)
+				{
+					activeInternetPass();
+					break;
+				}
+				else if (s == 0)
+				{
+					break;
+				}
+			}
+			else if (internetPassflag == 1)
+			{
+				int s;
+				cout << "This service is already enabled for you" << endl;
+				cout << "Do you want disable Internet Pass (Y=1/N=0) ? ";
+				cin >> s;
+				if (s == 1)
+				{
+					disactiveInternetPass();
+					break;
+				}
+				else if (s == 0)
+				{
+					break;
+				}
+
+			}
+		}
+	}
+	returnmainmenu();
+}
+void disactiveInternetPass()
+{
+	ifstream open("bank.txt");
+	fstream fobjtemp;
+	fobjtemp.open("temp.txt", ios::out);
+	while (open >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+	{
+		fobjtemp << id << endl;
+		fobjtemp << name << endl;
+		fobjtemp << family << endl;
+		fobjtemp << balance << endl;
+		fobjtemp << cardpass << endl;
+		fobjtemp << Cardnumber << endl;
+		fobjtemp << Activeflag << endl;
+		if (id == fi)
+		{
+			if (internetPassflag == 1)
+			{
+				internetPassflag = 0;
+				fobjtemp << internetPassflag << endl;
+				internetPass = "0";
+				fobjtemp << internetPass << endl;
+				cvv2 = 0;
+				fobjtemp << cvv2 << endl;
+
+			}
+			else
+			{
+				fobjtemp << internetPassflag << endl;
+				fobjtemp << internetPass << endl;
+				fobjtemp << cvv2 << endl;
+			}
+		}
+		else
+		{
+			fobjtemp << internetPassflag << endl;
+			fobjtemp << internetPass << endl;
+			fobjtemp << cvv2 << endl;
+		}
+
+	}
+
+	ifstream openn("temp.txt");
+	fstream fobj;
+	fobj.open("bank.txt", ios::out);
+	while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+	{
+
+		fobj << id << endl;
+		fobj << name << endl;
+		fobj << family << endl;
+		fobj << balance << endl;
+		fobj << cardpass << endl;
+		fobj << Cardnumber << endl;
+		fobj << Activeflag << endl;
+		fobj << internetPassflag << endl;
+		fobj << internetPass << endl;
+		fobj << cvv2 << endl;
+
+	}
+	readdata();
+	cout << "This service is disable now. " << endl;
+	returnmainmenu();
+}
+void setInternetPass()
+{
+	readdata();
+	if (cvv2 == 0)
+	{
+		if (internetPassflag == 1)
+		{
+			g = 1;
+			passchangetostar1();
+			randCvv2();
+			ifstream open1("bank.txt");
+			fstream temp;
+			temp.open("temp.txt", ios::out);
+			while (open1 >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+			{
+				temp << id << endl;
+				temp << name << endl;
+				temp << family << endl;
+				temp << balance << endl;
+				temp << cardpass << endl;
+				temp << Cardnumber << endl;
+				temp << Activeflag << endl;
+				temp << internetPassflag << endl;
+				if (id == fi)
+				{
+					internetPass = pass;
+					temp << internetPass << endl;
+					cvv2 = cvv2t;
+					temp << cvv2 << endl;
+
+
+				}
+				else
+				{
+					temp << internetPass << endl;
+					temp << cvv2 << endl;
+				}
+			}
+
+			ifstream openn("temp.txt");
+			fstream fobj;
+			fobj.open("bank.txt", ios::out);
+			while (openn >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+			{
+
+				fobj << id << endl;
+				fobj << name << endl;
+				fobj << family << endl;
+				fobj << balance << endl;
+				fobj << cardpass << endl;
+				fobj << Cardnumber << endl;
+				fobj << Activeflag << endl;
+				fobj << internetPassflag << endl;
+				fobj << internetPass << endl;
+				fobj << cvv2 << endl;
+
+			}
+			readdata();
+			cout << endl;
+			cout << "Your internetpass is : " << internetPass << endl;
+			cout << "Your CVV2 is : " << cvv2 << endl;
+			cout << "Your Internet password & CVV2 set successfully." << endl;
+			returnmainmenu();
+		}
+		else
+		{
+			checkflag = 1;
+			checkInternetpassactive();
+						
+		}
+	}
+	else
+	{
+		cout << endl;
+		cout << "This serivice already enabled for you." << endl;
+		cout << "You can find internet pass and cvv2 below :" << endl;
+		readdata();
+		cout << endl;
+		cout << "Your internetpass is : " << internetPass << endl;
+		cout << "Your CVV2 is : " << cvv2 << endl;
+		returnmainmenu();
+	}
+}
+int  randCvv2()
+{
+	int max = 999;
+	int min = 101;
+	srand(time(0));
+	cvv2t = (rand() % (max - min)) + min;
+	return cvv2t;
+
+}
+void readdata()
+{
+	fstream fileobj;
+	fileobj.open("bank.txt", ios::in);
+	while (fileobj >> id >> name >> family >> balance >> cardpass >> Cardnumber >> Activeflag >> internetPassflag >> internetPass >> cvv2)
+	{
+		if (id == fi)
+		{
+			fileobj << id << endl;
+			fileobj << name << endl;
+			fileobj << family << endl;
+			fileobj << balance << endl;
+			fileobj << cardpass << endl;
+			fileobj << Cardnumber << endl;
+			fileobj << Activeflag << endl;
+			fileobj << internetPassflag << endl;
+			fileobj << internetPass << endl;
+			fileobj << cvv2 << endl;
+			break;
+		}
+	}
+}
