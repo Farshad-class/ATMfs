@@ -543,10 +543,14 @@ void passchangetostar()
 			else
 			{
 
-				cout << "\b";
-				cout << " ";
-				cout << "\b";
-				c--;
+				if (c >= 1)
+				{
+					cout << "\b";
+					cout << " ";
+					cout << "\b";
+					c--;
+				}
+				
 			}
 		}
 		string str(a, 4);
@@ -578,10 +582,13 @@ string passchangetostar1()
 					else
 					{
 
-						cout << "\b";
-						cout << " ";
-						cout << "\b";
-						c--;
+						if (c >= 1)
+						{
+							cout << "\b";
+							cout << " ";
+							cout << "\b";
+							c--;
+						}
 					}
 				}
 				string str(a, 4);
@@ -603,10 +610,13 @@ string passchangetostar1()
 					else
 					{
 
-						cout << "\b";
-						cout << " ";
-						cout << "\b";
-						c--;
+						if (c >= 1)
+						{
+							cout << "\b";
+							cout << " ";
+							cout << "\b";
+							c--;
+						}
 					}
 				}
 				string str(a, 4);
@@ -627,10 +637,13 @@ string passchangetostar1()
 					else
 					{
 
-						cout << "\b";
-						cout << " ";
-						cout << "\b";
-						c--;
+						if (c >= 1)
+						{
+							cout << "\b";
+							cout << " ";
+							cout << "\b";
+							c--;
+						}
 					}
 				}
 				string str(a, 4);
@@ -652,10 +665,14 @@ string passchangetostar1()
 				else
 				{
 
-					cout << "\b";
-					cout << " ";
-					cout << "\b";
-					c--;
+					
+					if (c >=1)
+					{
+						cout << "\b";
+						cout << " ";
+						cout << "\b";
+						c--;
+					}
 				}
 			}
 			string str(b, 8);
@@ -676,7 +693,7 @@ void returnmainmenu()
 	}
 	else
 		do {
-			cout << "For return to main menu, please enter number 5 : ";
+			cout << "For return to main menu, please enter number 9 : ";
 			cin >> k;
 			if (k == 9)
 			{
